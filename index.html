@@ -2,6 +2,8 @@
 <html>
 
 <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -47,6 +49,8 @@
                 height: auto;
             }
         }
+
+        
     </style>
 </head>
 
@@ -65,7 +69,7 @@
                 <form>
                     <div class="mb-3">
                         <label for="numberOfLines" class="form-label">Number of Lines</label>
-                        <input type="text" class="form-control" id="numberOfLines" placeholder="Enter number of lines">
+                        <input type="text" class="form-control" id="numberOfLines" placeholder="between 2500 & 4000">
                     </div>
                     <div class="mb-3 d-flex flex-column flex-md-row gap-2">
                         <label class="btn btn-primary w-100 mb-2 mb-md-0" id="fileUploadBtn">
@@ -96,15 +100,14 @@
                     <canvas id="canvasOutput2" class="border rounded shadow"></canvas>
                 </div>
                 <div id="showPins" class="inputoutput d-none mb-4">
-                    <textarea id="pinsOutput" rows="10" class="form-control mb-3" style="width:100%;"></textarea>
-                    <div class="alert alert-warning p-2 mb-3 text-center">
-                        These examples will overwrite your generated output. Please copy your output first if you need to before clicking an example button.
-                    </div>
-                    <div class="mb-2">
+                    <textarea id="pinsOutput" rows="10" class="form-control mb-3" style="width:100%;" wrap="hard"></textarea>
+                    <button class="btn btn-primary mb-3" id="downloadPdfBtn">Download PDF</button>
+                    
+                    <!-- <div class="mb-2">
                         <span>Copy these numbers to save for later so you don't have to generate them again.</span><br />
                         <span>If you copied the numbers from a previous run, paste them above.</span><br />
                         <span>These numbers are used to help walk you through creating this string art</span>
-                    </div>
+                    </div> -->
                     <div class="d-flex justify-content-between mt-3">
                         <button class="btn btn-success" onclick="startCreating();">Start Creating</button>
                         <button class="btn btn-info" onclick="startDrawing();">Just Draw</button>
@@ -123,7 +126,7 @@
             </div>
         </div>
     </div>
-
+    
     <script src="./script.js" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <script async src="opencv.js" onload="onOpenCvReady();" type="text/javascript"></script>

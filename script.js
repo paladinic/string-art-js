@@ -1,10 +1,9 @@
-
 let IMG_SIZE = 500;
 let MAX_LINES = 400;// 4000;
 let N_PINS = 36 * 8;
 let MIN_LOOP = 20;
 let MIN_DISTANCE = 20;
-let LINE_WEIGHT = 20;
+let LINE_WEIGHT = 18;
 let FILENAME = "";
 let SCALE = 20;
 let HOOP_DIAMETER = 0.625;
@@ -322,7 +321,7 @@ function Finalize() {
     cv.imshow('canvasOutput2', dst);
     console.log(line_sequence);
     status.textContent = "Complete";
-    pinsOutput.value = line_sequence;
+    pinsOutput.value = line_sequence.join(', ');
     showPins.classList.remove('d-none');
     dst.delete(); result.delete();
     window.scrollTo({ top: 5000, left: 0, behavior: 'smooth' });
@@ -603,9 +602,53 @@ function onOpenCvReady() {
         document.getElementById('status').innerHTML = 'Generator is ready.';
     }, 1000);
 
-    numberOfLines.value = MAX_LINES;
+    // numberOfLines.value = MAX_LINES;
     numberOfLines.addEventListener("keyup", function (event) {
         MAX_LINES = parseInt(event.target.value);
     });
 
 }
+
+document.getElementById("downloadPdfBtn").addEventListener("click", () => {
+    const pinsOutput = document.getElementById("pinsOutput").value;
+    if (!pinsOutput.trim()) {
+        alert("No pin coordinates available to download.");
+        return;
+    }
+
+    const doc = new window.jspdf.jsPDF();
+    doc.setFontSize(10);
+    
+    // Add title
+    doc.text("Pin Coordinates:", 10, 10);
+    
+    // Split the coordinates into an array
+    const coordinates = pinsOutput.split(',');
+    
+    let yPosition = 20;
+    let xPosition = 10;
+    const lineHeight = 7;
+    const pageWidth = doc.internal.pageSize.width;
+    
+    // Process each coordinate
+    coordinates.forEach((coord, index) => {
+        // Add line break when reaching page width
+        if (xPosition > pageWidth - 20) {
+            xPosition = 10;
+            yPosition += lineHeight;
+        }
+        
+        // Add new page if needed
+        if (yPosition > doc.internal.pageSize.height - 20) {
+            doc.addPage();
+            yPosition = 20;
+            xPosition = 10;
+        }
+        
+        // Add the coordinate
+        doc.text(coord.trim() + ',', xPosition, yPosition);
+        xPosition += doc.getTextWidth(coord.trim() + ', ');
+    });
+
+    doc.save("pin_coordinates.pdf");
+});
