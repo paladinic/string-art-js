@@ -15,7 +15,7 @@
     <style>
         body {
             margin: 0;
-            height: 100vh;
+            min-height: 100vh;
             background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1, #fbc2eb, #fad0c4);
             background-size: 400% 400%;
             animation: gradientAnimation 15s ease infinite;
@@ -50,12 +50,16 @@
             }
         }
 
+        .cropper-move{
+            border-radius: 50% !important;
+        }
+
         
     </style>
 </head>
 
 <body>
-    <div class="container py-4">
+    <div class="container py-4 overflow-auto">
 
         <div class="row mb-4">
             <div class="col">
